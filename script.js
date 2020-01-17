@@ -159,44 +159,20 @@ context.fill()
 context.beginPath()
 context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2) */
 
-const ball = {x: 0, y: 0}
-const ball2 = {x: 0, y: 0}
-const mouse = { x: 0, y: 0}
+//const ball = {x: 0, y: 0}
+const ballBot = {x: 0, y: 0}
 
-window.addEventListener('mousemove', (event) => 
-{
-    mouse.x = event.clientX
-    mouse.y = event.clientY
-})
 
-const loop = () =>
-{
-    window.requestAnimationFrame(loop)
 
-    ball.x += ((mouse.x - ball.x)/3) *0.1
-    ball2.x += ((mouse.x - ball.x)) *0.1
-    ball.y += ((mouse.y - ball.y) / 3) *0.1
-    ball2.y += (mouse.y - ball.y) * 0.09
-    console.log(ball2)
-    context.globalAlpha = 0.2
-    context.fillStyle = '#fff'
-    context.fillRect(0, 0, $canvas.width, $canvas.height)
 
-    context.beginPath()
-    context.arc(ball.x, ball.y, 50, 0, Math.PI * 2)
-    context.lineTo(ball.y, ball2.y)
-    context.fillStyle = 'blue'
-    //context.moveTo(ball.x, ball.y)
-    /* context.globalAlpha = 1
-    context.lineWidth   = 20
-    context.lineCap     = 'round'  // round | butt | square
-    context.lineJoin    = 'round'  // bevel | round | mitter
-    context.strokeStyle = 'orange' */
-    context.fill()
-}
+
+
+/* console.log()
+
+initGame()
 
 loop()
-
+ */
 /* const boucle = () =>
 {
     window.requestAnimationFrame(boucle)
@@ -213,3 +189,165 @@ loop()
 
 boucle()
  */
+
+ function Ball(x,y,r,c,m)
+ {
+    this.x = x
+    this.y = y
+    this.r = r
+    this.c = c
+    this.m = m
+    this.mouse = {x: 0, y: 0}
+    //his.ball
+   // this.ballsBot = []
+    //console.log(this.clientX)
+   
+    this.ballUpdate = function()
+    {
+
+        
+
+        const drawCanvas = () =>
+        {
+                window.requestAnimationFrame(drawCanvas)
+
+                if(this.m == true)
+                {
+                    window.addEventListener('mousemove', (event) => 
+                    {
+                        this.mouse.x = event.clientX
+                        this.mouse.y = event.clientY
+                    })
+                this.x += ((this.mouse.x - this.x)/3) *0.1
+                this.y += ((this.mouse.y - this.y) / 3) *0.1
+            }
+            this.drawBall()            
+        }
+
+        drawCanvas()
+    }
+
+    this.drawBall = function() 
+        {
+            context.beginPath()
+            context.fillStyle =this.c
+            context.arc(this.x, this.y, this.r, 0, Math.PI *2)
+            context.fill()
+        }
+
+    this.collision = function(ball, ball2)
+    {
+
+        this.ball = ball
+        this.ball2 = ball2
+
+        this.circle1 = {radius: this.ball.r, x: window.innerWidth/2+this.ball.x, y: window.innerHeight/2+this.ball.y}
+        this.circle2 = {radius: this.ball2.r, x: window.innerWidth/2+this.ball2.x, y: window.innerHeight/2+this.ball2.y}
+        
+        this.dx = this.circle1.x - this.circle2.x
+        this.dy = this.circle1.y - this.circle2.y
+        
+        this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy)
+
+        if(this.distance < this.circle1.radius + this.circle2.radius)
+          {
+              this.sum = Math.PI * this.circle1.radius * this.circle1.radius + Math.PI * this.circle2.radius * this.circle2.radius
+
+              this.r = Math.sqrt(this.sum / Math.PI)
+              return true
+          } else {
+              return false
+          }
+    }
+
+ }
+
+
+let ball
+let ballsBot = []
+let zoom =1
+let amount = 0.1
+let newzoom = 0
+
+
+function setupGame()
+{
+    ball = new Ball(0,0,64,'black', true)
+
+    for(let i = 0; i < 100; i++)
+    {
+        let x = Math.floor(Math.random() * Math.floor($canvas.width))
+        let y = Math.floor(Math.random() * Math.floor($canvas.height))
+        ballsBot[i] = new Ball(x,y, 16, 'red', false)
+    }
+}
+
+function setCenter()
+{
+    cx = ball.x
+    cy = ball.y
+}
+
+function resizeMap(w,h)
+{
+    $canvas.width = w
+    $canvas.height = h
+    window.addEventListener("resize", ()=> {
+        resizeMap(window.innerWidth, window.innerHeight)
+        //this.initScene()
+    });
+}
+
+function zoomCalcul()
+{
+    amount = amount < 0 ? 0 : amount;
+    amount = amount > 1 ? 1 : amount;
+    zoom = (zoom + (newzoom - zoom) * amount)
+}
+
+function setCanvasBg() 
+{
+    window.requestAnimationFrame(setCanvasBg)
+
+    context.translate(-$canvas.width / 2, -$canvas.height / 2)
+    newzoom = 64 / ball.r
+    
+    //zoomCalcul(zoom, newzoom, amount)
+    //console.log(zoomCalcul(9, 8, 0.1))
+    //context.scale(2, 2)
+    //context.translate(-ball.x, -ball.y)
+
+
+    context.beginPath()
+    context.fillStyle = '#fff'
+    context.fillRect(0, 0, $canvas.width, $canvas.height)
+    context.fill()
+
+
+    for(let i =  0; i <= ballsBot.length - 1; i++)
+    {
+        ballsBot[i].drawBall()
+        if(ball.collision(ball, ballsBot[i]))
+        {
+
+            ballsBot.splice(i, 1)
+        }
+    }
+    
+}
+
+
+        
+
+
+function drawGame()
+{
+    setupGame()
+    setCenter()
+    resizeMap(window.innerWidth, window.innerHeight)
+    setCanvasBg()
+    ball.ballUpdate()
+    //initBot()
+}
+
+drawGame()
