@@ -1,196 +1,10 @@
 const $canvas = document.querySelector('.js-canvas')
 const context = $canvas.getContext('2d')
 
-$canvas.width = 800
-$canvas.height = 600
+$canvas.width = window.innerWidth
+$canvas.height = window.innerHeight
 
-/* //Gariniture
-context.beginPath()
-context.moveTo(200, 200)
-context.arc(200, 200, 100,0, Math.PI * 0.3, false) */
-
-
-/* context.moveTo(200, 200)
-context.lineTo(50, 50)
-context.lineTo(50, 300) */
-//context.closePath()
-
-
-/* context.fillStyle = '#ff000055'
-context.shadowOffsetX = 5
-context.shadowOffsetY = 10
-context.shadowBlur = 50
-context.shadowColor = 'blue' */
-
-/* context.lineWidth = 20
-context.lineJoin = 'round'
-context.lineCap = 'square'
-context.stroke() */
-
-/* context.fillStyle = 'orange'
-context.fill()
-
-//la croute
-context.beginPath()
-context.arc(200, 200, 100, 0, Math.PI * 0.3, false)
-
-context.lineWidth = 12
-context.lineCap = 'round'
-context.strokeStyle = '#f1bd90'
-context.stroke() */
-
-//Faire un trou dans carré
-/* context.fillRect(50, 50, 200, 100)
-context.clearRect(50, 50, 50, 50) */
-
-/* const text = 'lorem ipsum helloe '
-
-context.fillText(text, 200, 200) */
-
-//const image = document.createElement('img')
-
-//Image
-/* const image = new Image() // --> BEaucoup mieux
-
-image.addEventListener('load', () =>{
-    context.drawImage(image, 50, 50)
-})
-
-image.src = 'https://picsum.photos/400/300'
- */
-
- //Dessiner courbe de bézier
-
-/* context.beginPath()
-context.moveTo(50, 50)
-context.bezierCurveTo(
-    300,100,
-    100,300,
-    300, 300
-)
-
-context.stroke()
-
-context.beginPath()
-context.moveTo(50, 50)
-context.quadraticCurveTo(
-    300,100,
-    300, 300
-)
-
-context.stroke() */
-
-//Transparence
-
-/* context.globalAlpha = 0.5
-context.fillStyle = '#ff0000'
-context.fillRect(50, 50, 200, 200)
-
-context.fillStyle = '#00ff00'
-context.fillRect(100, 100, 200, 200)
-
-context.fillStyle = '#0000ff'
-context.fillRect(150, 150, 200, 200)
-
- */
-
-/* context.globalCompositeOperation = 'lighter'
-
-context.fillStyle = '#ff0000'
-context.fillRect(50, 50, 200, 200)
-
-context.fillStyle = '#00ff00'
-context.fillRect(100, 100, 200, 200)
-
-context.fillStyle = '#0000ff'
-context.fillRect(150, 150, 200, 200) */
-
-
-
-/* 
-context.beginPath()
-context.moveTo(200, 200)
-context.arc(200, 200, 100,0, Math.PI * 0.3, false) 
-
-
- context.moveTo(200, 200)
-context.lineTo(50, 50)
-context.lineTo(50, 300) 
-context.closePath() */
-
-
-/* const tick = () =>
-{
-    window.requestAnimationFrame(tick)
-
-    context.clearRect(0, 0, $canvas.width, $canvas.height)
-
-    ball.x += 5
-    ball.y = -Math.abs(Math.sin(Date.now()*0.005)) *100 + 200
-
-    if(ball.x > $canvas.width + ball.radius){
-        ball.x = -ball.radius
-    }
-
-    context.beginPath()
-    context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2)
-    context.fill()
-}
-
-
-
-tick() */
-
-/* context.fillRect(200, 100, 25, 100)
-
-context.fillStyle = 'grey'
-context.fillRect(225, 100, 25, 100)
-
-const ball = {x: 200, y: 200, radius: 10}
-const ball2 = {x: 250, y: 200, radius: 10}
-
-
-context.fillStyle = 'black'
-context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2)
-context.arc(ball2.x, ball2.y, ball2.radius, 0, Math.PI * 2)
-
-context.fill()
-
-context.beginPath()
-context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2) */
-
-//const ball = {x: 0, y: 0}
-const ballBot = {x: 0, y: 0}
-
-
-
-
-
-
-/* console.log()
-
-initGame()
-
-loop()
- */
-/* const boucle = () =>
-{
-    window.requestAnimationFrame(boucle)
-
-    context.beginPath()
-    context.moveTo(200, 200)
-    context.lineTo(50, 300)
-    context.lineWidth   = 20
-    context.lineCap     = 'round'  // round | butt | square
-    context.lineJoin    = 'round'  // bevel | round | mitter
-    context.strokeStyle = 'orange'
-    context.stroke()
-}
-
-boucle()
- */
-
- function Ball(x,y,r,c,m)
+ function Ball(x,y,r,c,m,speedX, speedY,botXL)
  {
     this.x = x
     this.y = y
@@ -198,19 +12,30 @@ boucle()
     this.c = c
     this.m = m
     this.mouse = {x: 0, y: 0}
+    this.speedX = 5
+    this.speedY = 5
+    this.botXL = true
     //his.ball
    // this.ballsBot = []
     //console.log(this.clientX)
+
+    this.mouseEvent = function()
+    {
+        window.addEventListener('mousemove', (event) => 
+            {
+                this.mouse.x = event.clientX
+                this.mouse.y = event.clientY
+            })
+    }
+
+    this.mouseEvent()
    
     this.ballUpdate = function()
     {
-
         
-
         const drawCanvas = () =>
         {
-                window.requestAnimationFrame(drawCanvas)
-
+            //window.requestAnimationFrame(drawCanvas)
                 if(this.m == true)
                 {
                     window.addEventListener('mousemove', (event) => 
@@ -218,28 +43,53 @@ boucle()
                         this.mouse.x = event.clientX
                         this.mouse.y = event.clientY
                     })
-                this.x += ((this.mouse.x - this.x)/3) *0.1
-                this.y += ((this.mouse.y - this.y) / 3) *0.1
-            }
+                        this.x += ((this.mouse.x - this.x)/3) *0.1
+                        this.y += ((this.mouse.y - this.y) / 3) *0.1
+                }
             this.drawBall()            
         }
-
         drawCanvas()
     }
 
-    this.drawBall = function() 
+    this.botAnimDirection = function(randomXX,randomYY,randomRR)
+    {
+        const direction = () =>
         {
-            context.beginPath()
-            context.fillStyle =this.c
-            context.arc(this.x, this.y, this.r, 0, Math.PI *2)
-            context.fill()
-        }
+            window.requestAnimationFrame(direction)
 
-    this.collision = function(ball, ball2)
+            this.x += randomXX
+            this.y += randomYY
+            this.r = randomRR
+
+            if(this.x > $canvas.width + this.r){
+                this.x = 0
+            }
+
+            if(this.y > $canvas.height + this.r){
+                this.y = 0
+            }
+
+            //console.log(this.x)
+            this.drawBall()
+        }
+        direction()
+    }
+
+    this.drawBall = function() 
+    {
+        context.beginPath()
+        context.fillStyle =this.c
+        context.arc(this.x, this.y, this.r, 0, Math.PI *2)
+        context.fill()
+    }
+
+    this.collision = function(ball, ball2, radius)
     {
 
         this.ball = ball
         this.ball2 = ball2
+        this.radius = radius
+        this.radius = false
 
         this.circle1 = {radius: this.ball.r, x: window.innerWidth/2+this.ball.x, y: window.innerHeight/2+this.ball.y}
         this.circle2 = {radius: this.ball2.r, x: window.innerWidth/2+this.ball2.x, y: window.innerHeight/2+this.ball2.y}
@@ -249,17 +99,20 @@ boucle()
         
         this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy)
 
-        if(this.distance < this.circle1.radius + this.circle2.radius)
-          {
-              this.sum = Math.PI * this.circle1.radius * this.circle1.radius + Math.PI * this.circle2.radius * this.circle2.radius
+        if(this.radius = true)
+        {
+            if(this.distance < this.circle1.radius + this.circle2.radius)
+            {
+                this.sum = Math.PI * this.circle1.radius * this.circle1.radius + Math.PI * this.circle2.radius * this.circle2.radius
 
-              this.r = Math.sqrt(this.sum / Math.PI)
-              return true
-          } else {
-              return false
-          }
+                this.r = Math.sqrt(this.sum / Math.PI)
+                return true
+            } else {
+                return false
+            }
+        }
+        
     }
-
  }
 
 
@@ -268,54 +121,116 @@ let ballsBot = []
 let zoom =1
 let amount = 0.1
 let newzoom = 0
+let randomXYR = {x: 0, y:0, r:32}
+let botAnim = []
+let mouseMap = {x: 0, y: 0}
 
+window.addEventListener('mousemove', (event) =>
+{
+    mouseMap.x = event.clientX    
+    mouseMap.y = event.clientY
+    
+})
 
 function setupGame()
 {
-    ball = new Ball(0,0,64,'black', true)
+    ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,64,'blue', true)
 
-    for(let i = 0; i < 100; i++)
+
+    for(let i = 0; i < 1000; i++)
     {
-        let x = Math.floor(Math.random() * Math.floor($canvas.width))
-        let y = Math.floor(Math.random() * Math.floor($canvas.height))
-        ballsBot[i] = new Ball(x,y, 16, 'red', false)
+        let x = Math.floor(Math.random() * Math.floor(5000))
+        let y = Math.floor(Math.random() * Math.floor(5000))
+        ballsBot[i] = new Ball(x,y, 16, 'red', false, true)
     }
 }
 
-function setCenter()
+
+for(let i =0; i < 5; i++)
 {
-    cx = ball.x
-    cy = ball.y
+    const botAnimElement = new Ball(Math.random() * window.innerWidth, Math.random() * window.innerHeight, Math.random() * 50,  'green', false, true)
+    botAnim.push(botAnimElement)
+}
+
+function setMap()
+{   
+
+    for(const ballBotSelect of ballsBot)
+    {
+        if(ball.y > window.innerHeight  - ball.r)
+        {
+            ballBotSelect.y = ballBotSelect.y - ball.y
+        }
+        if(ball.y < 0  + ball.r)
+        {
+            ballBotSelect.y = ballBotSelect.y + ball.y
+        }
+        if(ball.x < 0 + ball.r)
+        {
+            ballBotSelect.x = ballBotSelect.x + ball.x
+        }
+        if(ball.x > window.innerWidth  - ball.r)
+        {
+            ballBotSelect.x = ballBotSelect.x - ball.x
+        }
+    }
+}
+
+function randomDirection()
+{
+
+    const friction = 0.05
+
+    for(const ballSelect of botAnim)
+    {
+        
+        ballSelect.y += ballSelect.speedY
+        ballSelect.x += ballSelect.speedX
+
+        if(ballSelect.y > window.innerHeight - ballSelect.r)
+        {
+            ballSelect.speedY *= - (1 - friction)
+            ballSelect.y = window.innerHeight  - ballSelect.r
+        }
+
+        if(ballSelect.y < ballSelect.r)
+        {
+            ballSelect.speedY *= - (1 - friction)
+            ballSelect.y = ballSelect.r
+        }
+
+        if(ballSelect.x > window.innerWidth - ballSelect.r)
+        {
+            ballSelect.speedX *= - (1 - friction)
+            ballSelect.x = window.innerWidth - ballSelect.r
+        }
+
+        if(ballSelect.x < ballSelect.r)
+        {
+            ballSelect.speedX *= - (1 - friction)
+            ballSelect.x = ballSelect.r
+        }
+        setMap()
+        ballSelect.drawBall()
+    }
 }
 
 function resizeMap(w,h)
 {
     $canvas.width = w
     $canvas.height = h
-    window.addEventListener("resize", ()=> {
-        resizeMap(window.innerWidth, window.innerHeight)
-        //this.initScene()
-    });
 }
 
-function zoomCalcul()
-{
-    amount = amount < 0 ? 0 : amount;
-    amount = amount > 1 ? 1 : amount;
-    zoom = (zoom + (newzoom - zoom) * amount)
-}
+window.addEventListener("resize", ()=> {
+    resizeMap(window.innerWidth, window.innerHeight)
+    //this.initScene()
+});
 
 function setCanvasBg() 
 {
     window.requestAnimationFrame(setCanvasBg)
-
-    context.translate(-$canvas.width / 2, -$canvas.height / 2)
-    newzoom = 64 / ball.r
+    window.requestAnimationFrame(randomDirection)
     
-    //zoomCalcul(zoom, newzoom, amount)
-    //console.log(zoomCalcul(9, 8, 0.1))
-    //context.scale(2, 2)
-    //context.translate(-ball.x, -ball.y)
 
 
     context.beginPath()
@@ -323,31 +238,98 @@ function setCanvasBg()
     context.fillRect(0, 0, $canvas.width, $canvas.height)
     context.fill()
 
-
+    drawGrid()
+    ball.ballUpdate()
+    
     for(let i =  0; i <= ballsBot.length - 1; i++)
     {
         ballsBot[i].drawBall()
-        if(ball.collision(ball, ballsBot[i]))
+        ballsBot[i].ballUpdate()
+        
+        /* if(ball.collision(ball, ballsBot[i], true))
+        {
+            ballsBot.splice(i, 1)
+        } */
+    }    
+    /* for(let i =  0; i <= botAnim.length - 1; i++)
+    {
+
+        for(let j =  0; j <= ballsBot.length - 1; j++)
+        {
+            //ballsBot[j].drawBall()
+            //ballsBot[j].ballUpdate()
+            
+            if(ball.collision(botAnim[i], ballsBot[j]))
+            {
+                ballsBot.splice(i, 1)
+                //console.log('botbotbo')
+            }
+        }    
+    }   */  
+
+/*     for(let i =  0; i <= botAnim.length - 1; i++)
+    {
+        //botAnim[i].drawBall()
+        //botAnim[i].ballUpdate()
+
+        if(ball.collision(ball, botAnim[i]))
         {
 
-            ballsBot.splice(i, 1)
+            botAnim.splice(i, 1)
         }
-    }
+        
+    }    
+    for(let i =  0; i <= botAnim.length - 1; i++)
+    {
+        //ballsBot[i].ballUpdate()
+
+        if(botAnim[i].collision(botAnim[i], ball))
+        {
+
+            if(botAnim[i].r > ball.r)
+            {
+                console.log('gameover')
+            }
+
+            if(botAnim[i].r < ball.r)
+            {
+                console.log('++')
+            }
+        }
+        
+    }     */
     
 }
 
 
-        
-
-
-function drawGame()
+function drawGrid()
 {
+
+    //window.requestAnimationFrame(drawGrid)
+
+   const blockWidth = 50
+   context.beginPath()
+   context.fillStyle = '#95a5a6'
+   context.lineWidth = .5
+
+   for(let i = blockWidth; i < $canvas.height; i += blockWidth)
+   {
+       context.moveTo(0, i)
+       context.lineTo($canvas.width, i)
+   }
+   for(let j = blockWidth; j < $canvas.width; j += blockWidth)
+   {
+       context.moveTo(j, 0)
+       context.lineTo(j, $canvas.height)
+   }
+
+   context.stroke()
+}
+
+
+function drawGame(){
     setupGame()
-    setCenter()
-    resizeMap(window.innerWidth, window.innerHeight)
     setCanvasBg()
-    ball.ballUpdate()
-    //initBot()
 }
 
 drawGame()
