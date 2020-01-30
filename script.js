@@ -519,7 +519,7 @@ const pauseBtn = document.querySelector('.test')
 const pauseImg = document.querySelector('.test img')
 const mainContainer = document.querySelector('.main__container')
 const tabPause = ['img/pause.svg', 'img/close.svg']
-let indexPause = 1
+let indexPause = 0
 
 pauseBtn.addEventListener('click', () =>
 {
