@@ -8,7 +8,41 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas width="800" height="600" class="canvas js-canvas"></canvas>
+
+    <main>
+        <div class="main__container">
+            <div class="menu__settings">
+                <button class="settings__btn"><img src="img/gear.svg" alt="" class="img__settings"></button>
+                <div class="menu__settings_main">
+                    <button>Mode jour</button>
+                    <button>Mode sombre</button>
+                    <button><img src="img/github.svg" alt=""></button>
+                </div>
+            </div>
+            <div class="menu__title">
+                <h1>Hugo.io</h1>
+            </div>
+            <div class="menu__connection">
+                Entrez votre pseudo et venez jouer !
+            </div>
+            <form method="post">
+                <input type="text" name="nickname" placeholder="PSEUDO" class="submit">
+                <div class="form__play">
+
+                    <input type="submit" value=""  class="transition__play">
+                    <img src="img/play-button.svg" alt="">
+                </div>
+            </form>
+            <div class="menu__tuto">
+                Bougez votre souris afin de vous déplacez et de devenir le plus gros de la partie !
+            </div>
+            <!-- Choisir votre couleur avec bouton random puis save la couleur qui plait pour jouer -->
+        </div>
+    </main>
+
+    <!-- <canvas width="800" height="600" class="canvas js-canvas"></canvas> -->
+
+
     <script src="script.js"></script>
 </body>
 </html>
