@@ -1,10 +1,10 @@
-/* const $canvas = document.querySelector('.js-canvas')
+const $canvas = document.querySelector('.js-canvas')
 const context = $canvas.getContext('2d')
 
 $canvas.width = window.innerWidth
-$canvas.height = window.innerHeight */
+$canvas.height = window.innerHeight
 
- function Ball(x,y,r,c,m,speedX, speedY,botXL)
+ function Ball(x,y,r,c,m, nickname)
  {
     this.x = x
     this.y = y
@@ -15,6 +15,7 @@ $canvas.height = window.innerHeight */
     this.speedX = 5
     this.speedY = 5
     this.botXL = true
+    this.nickname  = nickname
     //his.ball
    // this.ballsBot = []
     //console.log(this.clientX)
@@ -81,6 +82,16 @@ $canvas.height = window.innerHeight */
         context.fillStyle =this.c
         context.arc(this.x, this.y, this.r, 0, Math.PI *2)
         context.fill()
+
+        if(this.nickname != undefined)
+        {
+            context.font = '10px Hellvetica'
+            context.textAlign = 'center'
+            context.textBaseline = 'middle'
+            context.fillStyle = 'white'
+            context.fillText(this.nickname, this.x, this.y)
+        }
+        
     }
 
     this.collision = function(ball, ball2, radius)
@@ -129,49 +140,64 @@ let randomXYR = {x: 0, y:0, r:32}
 let botAnim = []
 let mouseMap = {x: 0, y: 0}
 let counter = 1
+let nicknameDiv  = document.querySelector('.submit').innerHTML
+const playBtn = document.querySelector('.form__play')
 
-const btnPauseDraw = {
-    posX: window.innerWidth * 0.87,
-    posY: window.innerHeight * 0.05,
-    w: 80,
-    h: 80
-}
 
-const barLeftPause = {
-    posX: btnPauseDraw.posX * 1.03,
-    posY: btnPauseDraw.posY * 1.55,
-    w: btnPauseDraw.posX,
-    h: btnPauseDraw.posY * 2.5
-}
 
-const barRightPause = {
-    posX: btnPauseDraw.posX * 1.06,
-    posY: btnPauseDraw.posY * 1.55,
-    w: btnPauseDraw.posX,
-    h: btnPauseDraw.posY * 2.5
-}
+
+window.addEventListener('load', (event) => 
+{
+   // alert('load')
+    mainContainer.classList.toggle('test2')
+    $canvas.classList.toggle('canvas__paused')
+})
+
+playBtn.addEventListener('click', () =>
+{
+    nicknameDiv  = document.querySelector('.submit').value
+    ball.nickname = nicknameDiv
+    
+    mainContainer.classList.toggle('test2')
+    $canvas.classList.toggle('canvas__paused')
+})
+
 
 window.addEventListener('mousemove', (event) =>
 {
+    //console.log(ballsBot[1].x +=  - mouseMap.x + event.clientX)
     mouseMap.x = event.clientX    
     mouseMap.y = event.clientY
     setMap()
 })
 
+function setMapFinal()
+{
+    window.addEventListener('mousemove', (event) =>
+    {
+        for(const botBall of ballsBot)
+        {
+            botBall.x += -mouseMap.x + event.clientX
+            //console.log(botBall.x)
+        }
+    })
+    
+}
+
 function setupGame()
 {
-    ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,48,'blue', true)
+    ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,48,'blue', true, nicknameDiv)
 
 
     for(let i = 0; i < 500; i++)
     {
         let x = Math.floor(Math.random() * Math.floor(5000))
         let y = Math.floor(Math.random() * Math.floor(5000))
-        ballsBot[i] = new Ball(x,y, 16, 'red', false, true)
+        ballsBot[i] = new Ball(x,y, 16, 'red', false)
     }
 }
 
-function btnPlayPause()
+/* function btnPlayPause()
 {
     $canvas.addEventListener('click', (event) =>
     {
@@ -183,9 +209,9 @@ function btnPlayPause()
             counterBtn()
         }
     })
-}
+} */
 
-function drawPauseBtn()
+/* function drawPauseBtn()
 {
      //BUTTON
      context.beginPath()
@@ -254,13 +280,14 @@ function counterBtn()
     {
         drawPauseBtn()
     }
-}
+} */
+
 
 
 
 for(let i =0; i < 5; i++)
 {
-    const botAnimElement = new Ball(Math.random() * window.innerWidth, Math.random() * window.innerHeight, Math.random() * 50,  'green', false, true)
+    const botAnimElement = new Ball(Math.random() * window.innerWidth, Math.random() * window.innerHeight, Math.random() * 50,  'green', false)
     botAnim.push(botAnimElement)
 }
 
@@ -360,7 +387,7 @@ function setCanvasBg()
 
     drawGrid()
     ball.ballUpdate()
-    counterBtn()
+   // counterBtn()
     //btnPlayPause()
     //setMap()
     function collisionBallBallBotAnim(botAnimColl, index){
@@ -387,20 +414,20 @@ function setCanvasBg()
     } */
     }
 
-    for(let i =  0; i <= botAnim.length - 1; i++)
+   /*  for(let i =  0; i <= botAnim.length - 1; i++)
     {
         for(let j =  0; j <= ballsBot.length - 1; j++)
         {
 
-            /* if(botAnim[i].collision(botAnim[i], ballsBot[j]))
+            if(botAnim[i].collision(botAnim[i], ballsBot[j]))
             {
                 //ballsBot.splice(j, 1)
 
                 //console.log('botbotbo')
-            } */
+            }
         }
         //collisionBallBallBotAnim(botAnim, i)
-    }
+    } */
 
 
     
@@ -467,33 +494,84 @@ function drawGrid()
 function drawGame()
 {
     setupGame()
+    //window.requestAnimationFrame(megamagaTest)
+    //alert(megamagaTest())
     setCanvasBg()
-    btnPlayPause()
+
+    //btnPlayPause()
 }
 
-//drawGame()
+drawGame()
 
+/* function megamagaTest()
+{
+    requestAnimationFrame(setMapFinal)
+} */
+
+
+    
 
 const btnSettings = document.querySelector('.settings__btn')
 
 const menuSettings = document.querySelector('.menu__settings_main')
 
+const pauseBtn = document.querySelector('.test')
+const pauseImg = document.querySelector('.test img')
+const mainContainer = document.querySelector('.main__container')
+const tabPause = ['img/pause.svg', 'img/close.svg']
+let indexPause = 1
+
+pauseBtn.addEventListener('click', () =>
+{
+    mainContainer.classList.toggle('test2')
+    $canvas.classList.toggle('canvas__paused')
+
+    indexPause += 1
+    
+    if(indexPause > 1)
+    {
+        indexPause = 0
+    }
+
+    pauseImg.src = tabPause[indexPause]
+
+    /* if(pauseImg.src == 'img/close.svg')
+    {
+        pauseImg.src = 'img/pause.svg'
+    }
+    if(pauseImg.src == 'img/pause.svg')
+    {
+        pauseImg.src = 'img/close.svg'
+    } */
+})
 
 
 btnSettings.addEventListener('click', () =>
 {
+    //menuSettings.classList.toggle('active')
+
     menuSettings.classList.toggle('active')
-    for(let i = 0; i < menuSettings.children.length ; i++ )
+    for(let i = 0; i < menuSettings.children.length ;i++  )
     {
         let selected = menuSettings.children[i]
 
-        selected.classList.add ('animationSettings')
-        console.log(selected.classList)
+        if(selected.classList.contains('settings__open'))
+        {
+            selected.classList.toggle('settings__open')
+            selected.classList.toggle('settings__closed')
+        }
+        if(selected.classList.contains('settings__closed'))
+        {
+            selected.classList.toggle('settings__open')
+            selected.classList.toggle('settings__closed')
+        }
+
+        selected.classList.toggle ('animationSettings')
+       // console.log(selected.classList)
         selected.addEventListener('animationend', () =>
         {
-            selected.classList.remove( 'animationSettings')
-            console.log(selected.classList + 'ok')
+            //console.log(selected.classList + 'ok')
             i++
-        })
+        }) 
     }
 })

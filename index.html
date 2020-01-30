@@ -9,14 +9,16 @@
 </head>
 <body>
 
+        <canvas width="800" height="600" class="canvas js-canvas"></canvas>
+
     <main>
         <div class="main__container">
             <div class="menu__settings">
                 <button class="settings__btn"><img src="img/gear.svg" alt="" class="img__settings"></button>
                 <div class="menu__settings_main">
-                    <button>Mode jour</button>
-                    <button>Mode sombre</button>
-                    <button><img src="img/github.svg" alt=""></button>
+                    <button class="settings__closed">Mode jour</button>
+                    <button class="settings__closed">Mode sombre</button>
+                    <button class="settings__closed"><img src="img/github.svg" alt=""></button>
                 </div>
             </div>
             <div class="menu__title">
@@ -26,10 +28,10 @@
                 Entrez votre pseudo et venez jouer !
             </div>
             <form method="post">
-                <input type="text" name="nickname" placeholder="PSEUDO" class="submit">
+                <input type="text" name="nickname" placeholder="PSEUDO" class="submit" contenteditable="true">
                 <div class="form__play">
 
-                    <input type="submit" value=""  class="transition__play">
+                    <input type="button" value=""  class="transition__play" href="#">
                     <img src="img/play-button.svg" alt="">
                 </div>
             </form>
@@ -37,10 +39,14 @@
                 Bougez votre souris afin de vous déplacez et de devenir le plus gros de la partie !
             </div>
             <!-- Choisir votre couleur avec bouton random puis save la couleur qui plait pour jouer -->
+            <!-- 2eme div pour pause avec chnage color ball et resume et settings -->
         </div>
     </main>
 
-    <!-- <canvas width="800" height="600" class="canvas js-canvas"></canvas> -->
+    
+    <button class="test">
+        <img src="img/pause.svg" alt="">
+    </button>
 
 
     <script src="script.js"></script>

@@ -19,15 +19,41 @@ input
     height: 100%;
 }
 
+.canvas__paused
+{
+    transition: .5s;
+    opacity: .5;
+}
+
+.test{
+    position: absolute;
+    width: 5%;
+    background: none;
+    padding:0;
+    top: 10%;
+    right: 5%;
+    border: none;
+}
+
+.test img
+{
+    width: 100%;
+}
+
+.test2{
+    transition: .5s;
+    display: block !important;
+}
 
 .main__container
 {
+    display: none;
+    position: absolute;
     width: 40%;
-    height: 100%;
     padding: 50px;
     background: #fafafa;
-    margin: 0 auto;
-    margin-top: 100px;
+    top: 13%;
+    left: 27%;
     border: 1px solid black;
     -webkit-box-shadow: 2px 4px 31px 12px rgba(0,0,0,0.43);
     -moz-box-shadow: 2px 4px 31px 12px rgba(0,0,0,0.43);
@@ -43,19 +69,13 @@ input
 {
     background: none;
     border: none;
+    cursor: pointer;
 }
 
 .settings__btn:hover
 {
     transition: .7s;
-    transform: scale(1.5)  ;
-    cursor: pointer;
-}
-
-.settings__btn:active
-{
-    transform: rotate(180deg);
-    transition: .9s;
+    transform: scale(1.5) rotate(180deg) ;
 }
 
 .img__settings
@@ -65,6 +85,7 @@ input
 
 .menu__settings_main
 {
+    height: 100%;
     display: none;
     position: absolute;
     left: 15%;
@@ -79,6 +100,7 @@ input
     text-transform: uppercase;
     border: 1px solid #2e2e2e;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .menu__settings_main button:nth-child(1)
@@ -95,7 +117,8 @@ input
 
 .menu__settings_main button img
 {
-    width: 50%;
+    width: 100%;
+    height: 100%;
 }
 
 .active
@@ -104,15 +127,26 @@ input
     height: 100%;
 }
 
-.animationSettings
+.settings__open
 {
+    display: block;
     animation: animationSettings 5s ease-in-out ; 
+}
+.settings__closed
+{
+    display: none;
+    animation: animationSettingsClosed 5s ease-in-out ; 
 }
 
 @keyframes animationSettings
 {
-    0%{width: 0%; visibility: visible;}
+    0%{width: 0%; }
     100%{width: 100%;}
+}
+@keyframes animationSettingsClosed
+{
+    0%{width: 100%; }
+    100%{width: 0;}
 }
 
 .menu__title
@@ -154,6 +188,7 @@ form
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .form__play img
@@ -171,6 +206,7 @@ form
     padding: 20px;
     background: #27ae60;
     border-radius: 50%;
+    cursor: pointer;
     /* border: 1px solid #2e2e2e; */
 }
 
@@ -178,11 +214,10 @@ form
 {
     transition: .7s;
     transform: rotate(360deg);
-    cursor: pointer;
 }
 
-.transition__play:active{
-    background: #000;
+.form__play:active{
+    transform:  scale(.8);
 }
 
 .menu__tuto
