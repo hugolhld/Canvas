@@ -4,7 +4,7 @@ const context = $canvas.getContext('2d')
 $canvas.width = window.innerWidth
 $canvas.height = window.innerHeight
 
- function Ball(x,y,r,c,m, nickname)
+ function Ball(x,y,r,c,m, nickname, bot)
  {
     this.x = x
     this.y = y
@@ -16,9 +16,8 @@ $canvas.height = window.innerHeight
     this.speedY = 5
     this.botXL = true
     this.nickname  = nickname
-    //his.ball
-   // this.ballsBot = []
-    //console.log(this.clientX)
+    this.bot = bot
+    this.oldPosition = {x: 0, y: 0}
 
     this.mouseEvent = function()
     {
@@ -36,20 +35,36 @@ $canvas.height = window.innerHeight
         
         const drawCanvas = () =>
         {
-            //window.requestAnimationFrame(drawCanvas)
                 if(this.m == true)
                 {
-                    window.addEventListener('mousemove', (event) => 
+                    $canvas.addEventListener('mousemove', (event) => 
                     {
                         this.mouse.x = event.clientX
                         this.mouse.y = event.clientY
                     })
                         this.x += ((this.mouse.x - this.x)/3) *0.1
                         this.y += ((this.mouse.y - this.y) / 3) *0.1
+                }else
+                {
+                    if(this.mouse.x + (window.innerWidth / 3) > window.innerWidth || this.mouse.x + (window.innerWidth / 3) < window.innerWidth )
+                    {       
+                        this.x -= (this.mouse.x - this.oldPosition.x)
+                        this.oldPosition.x = this.mouse.x
+                    }
+                    if(this.mouse.y + (window.innerWidth / 3) > window.innerWidth || this.mouse.y + (window.innerWidth / 3) < window.innerWidth )
+                    {       
+                        this.y -= (this.mouse.y - this.oldPosition.y)
+                        this.oldPosition.y = this.mouse.y
+                    }
                 }
             this.drawBall()            
         }
         drawCanvas()
+    }
+
+    this.ballBotXY = function()
+    {
+
     }
 
     this.botAnimDirection = function(randomXX,randomYY,randomRR)
@@ -70,7 +85,6 @@ $canvas.height = window.innerHeight
                 this.y = 0
             }
 
-            //console.log(this.x)
             this.drawBall()
         }
         direction()
@@ -121,7 +135,6 @@ $canvas.height = window.innerHeight
                     this.r = Math.sqrt(this.sum / Math.PI)
                     return true
                 }else {
-                    //alert('hhhhhx')
                     return false
                 }
             } 
@@ -141,14 +154,14 @@ let botAnim = []
 let mouseMap = {x: 0, y: 0}
 let counter = 1
 let nicknameDiv  = document.querySelector('.submit').innerHTML
+let oldPosition = {x: 0, y: 0}
 const playBtn = document.querySelector('.form__play')
 
 
 
 
-window.addEventListener('load', (event) => 
+window.addEventListener('load', () => 
 {
-   // alert('load')
     mainContainer.classList.toggle('test2')
     $canvas.classList.toggle('canvas__paused')
 })
@@ -165,10 +178,8 @@ playBtn.addEventListener('click', () =>
 
 window.addEventListener('mousemove', (event) =>
 {
-    //console.log(ballsBot[1].x +=  - mouseMap.x + event.clientX)
     mouseMap.x = event.clientX    
     mouseMap.y = event.clientY
-    setMap()
 })
 
 function setMapFinal()
@@ -187,103 +198,17 @@ function setMapFinal()
 function setupGame()
 {
     ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,48,'blue', true, nicknameDiv)
-
+    oldPosition.x = ball.x
+    oldPosition.y = ball.y
 
     for(let i = 0; i < 500; i++)
     {
         let x = Math.floor(Math.random() * Math.floor(5000))
         let y = Math.floor(Math.random() * Math.floor(5000))
+
         ballsBot[i] = new Ball(x,y, 16, 'red', false)
     }
 }
-
-/* function btnPlayPause()
-{
-    $canvas.addEventListener('click', (event) =>
-    {
-        counter += 1
-        console.log(counter)
-        if(event.x > btnPauseDraw.posY  && event.x < btnPauseDraw.posX + 80 && event.y > btnPauseDraw.posY && event.y < btnPauseDraw.posY + 80)
-        {
-            context.clearRect(btnPauseDraw.posX, btnPauseDraw.posY, btnPauseDraw.w, btnPauseDraw.h)
-            counterBtn()
-        }
-    })
-} */
-
-/* function drawPauseBtn()
-{
-     //BUTTON
-     context.beginPath()
-     context.fillStyle = 'grey'
-     context.globalAlpha = 0.5
-     context.fillRect(btnPauseDraw.posX, btnPauseDraw.posY, btnPauseDraw.w, btnPauseDraw.h )
-     //context.fill()
-
-
-     //BAR PAUSE LEFT
-     context.beginPath();
-     context.fillStyle ='black'
-     context.lineWidth = 10
-     context.lineCap = 'round'
-     context.globalAlpha = 1
-     context.moveTo(barLeftPause.posX, barLeftPause.posY);
-     context.lineTo(barLeftPause.posX, barLeftPause.h);
-    
-
-     //BAR PAUSE RIGHT
-     context.fillStyle ='black'
-     context.lineWidth = 10
-     context.lineCap = 'round'
-     context.moveTo(barRightPause.posX, barRightPause.posY);
-     context.lineTo(barRightPause.posX, barRightPause.h);
-     context.stroke(); 
-}
-
-function drawCrossBtn()
-{
-     //BUTTON
-     context.beginPath()
-     context.fillStyle = 'grey'
-     context.globalAlpha = 0.5
-     context.fillRect(btnPauseDraw.posX, btnPauseDraw.posY, btnPauseDraw.w, btnPauseDraw.h )
-     context.fill()
- 
- 
-    //Croix PAUSE LEFT
-     context.beginPath();
-     context.fillStyle ='black'
-     context.lineWidth = 10
-     context.lineCap = 'round'
-     context.globalAlpha = 1
-     context.moveTo(barLeftPause.posX, barLeftPause.posY);
-     context.lineTo(barRightPause.posX, barLeftPause.h);
-     context.stroke();
- 
-    //Croix PAUSE RIGHT
-     context.beginPath();
-     context.fillStyle ='black'
-     context.lineWidth = 10
-     context.lineCap = 'round'
-     context.moveTo(barRightPause.posX, barRightPause.posY);
-     context.lineTo(barLeftPause.posX, barRightPause.h);
-     context.stroke();
- 
-}
-
-function counterBtn()
-{
-    if(counter % 2 == 0)
-    {
-       drawCrossBtn()
-    }else
-    {
-        drawPauseBtn()
-    }
-} */
-
-
-
 
 for(let i =0; i < 5; i++)
 {
@@ -293,12 +218,13 @@ for(let i =0; i < 5; i++)
 
 function setMap()
 {   
-    if(mouseMap.x + (window.innerWidth / 3) > window.innerWidth) 
+    if(mouseMap.x + (window.innerWidth / 3) > window.innerWidth)
     {       
+        
             for(let i = 0; i < ballsBot.length; i++)
             {
-                    //console.log('ok')
-                    ballsBot[i].x += - 0.001
+                    ballsBot[i].x = ballsBot[i].x - (mouseMap.x - oldPosition)
+                    oldPosition = mouseMap.x
             } 
     }
 /*     for(const ballBotSelect of ballsBot)
@@ -357,7 +283,7 @@ function randomDirection()
             ballSelect.speedX *= - (1 - friction)
             ballSelect.x = ballSelect.r
         }
-        //setMap()
+
         ballSelect.drawBall()
     }
 }
@@ -370,16 +296,13 @@ function resizeMap(w,h)
 
 window.addEventListener("resize", ()=> {
     resizeMap(window.innerWidth, window.innerHeight)
-    //this.initScene()
-});
+})
 
 function setCanvasBg() 
 {
     window.requestAnimationFrame(setCanvasBg)
     window.requestAnimationFrame(randomDirection)
     
-
-
     context.beginPath()
     context.fillStyle = '#fff'
     context.fillRect(0, 0, $canvas.width, $canvas.height)
@@ -387,9 +310,7 @@ function setCanvasBg()
 
     drawGrid()
     ball.ballUpdate()
-   // counterBtn()
-    //btnPlayPause()
-    //setMap()
+
     function collisionBallBallBotAnim(botAnimColl, index){
 
         if(botAnimColl[index].collision(botAnimColl[index], ball))
@@ -405,6 +326,7 @@ function setCanvasBg()
 
     for(let i = 0; i < ballsBot.length; i++)
     {
+
         ballsBot[i].drawBall()
         ballsBot[i].ballUpdate()
 
@@ -428,9 +350,6 @@ function setCanvasBg()
         }
         //collisionBallBallBotAnim(botAnim, i)
     } */
-
-
-    
 
 /*     for(let i =  0; i <= botAnim.length - 1; i++)
     {
