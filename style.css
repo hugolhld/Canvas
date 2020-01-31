@@ -15,8 +15,8 @@ input
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
 }
 
 .canvas__paused
@@ -189,6 +189,7 @@ form
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: .7s;
 }
 
 .form__play img
@@ -213,7 +214,7 @@ form
 .form__play:hover
 {
     transition: .7s;
-    transform: rotate(360deg);
+    transform: scale(.8);
 }
 
 .form__play:active{

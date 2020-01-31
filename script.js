@@ -28,6 +28,11 @@ $canvas.height = window.innerHeight
             })
     }
 
+    if(this.c == randomColor)
+    {
+        this.c = `hsl(${Math.random() * 360}deg, 100%, 90%)`
+    }
+
     this.mouseEvent()
    
     this.ballUpdate = function()
@@ -46,12 +51,14 @@ $canvas.height = window.innerHeight
                         this.y += ((this.mouse.y - this.y) / 3) *0.1
                 }else
                 {
-                    if(this.mouse.x + (window.innerWidth / 3) > window.innerWidth || this.mouse.x + (window.innerWidth / 3) < window.innerWidth )
+                    /* this.mouse.y = this.mouse.y / 5
+                    this.mouse.x = this.mouse.x / 5 */
+                    if(this.mouse.x + ($canvas.width / 3) > $canvas.width || this.mouse.x + ($canvas.width / 3) < $canvas.width )
                     {       
                         this.x -= (this.mouse.x - this.oldPosition.x)
                         this.oldPosition.x = this.mouse.x
                     }
-                    if(this.mouse.y + (window.innerWidth / 3) > window.innerWidth || this.mouse.y + (window.innerWidth / 3) < window.innerWidth )
+                    if(this.mouse.y + ($canvas.width / 3) > $canvas.width || this.mouse.y + ($canvas.width / 3) < $canvas.width )
                     {       
                         this.y -= (this.mouse.y - this.oldPosition.y)
                         this.oldPosition.y = this.mouse.y
@@ -60,11 +67,6 @@ $canvas.height = window.innerHeight
             this.drawBall()            
         }
         drawCanvas()
-    }
-
-    this.ballBotXY = function()
-    {
-
     }
 
     this.botAnimDirection = function(randomXX,randomYY,randomRR)
@@ -97,15 +99,15 @@ $canvas.height = window.innerHeight
         context.arc(this.x, this.y, this.r, 0, Math.PI *2)
         context.fill()
 
-        if(this.nickname != undefined)
+        if(this.nickname != undefined || this.m == true)
         {
-            context.font = '10px Hellvetica'
+            context.font = '25px Hellvetica'
             context.textAlign = 'center'
             context.textBaseline = 'middle'
             context.fillStyle = 'white'
             context.fillText(this.nickname, this.x, this.y)
+            context.fillText(Math.round(this.r), this.x, this.y * 1.1)
         }
-        
     }
 
     this.collision = function(ball, ball2, radius)
@@ -116,8 +118,8 @@ $canvas.height = window.innerHeight
         this.radius = radius
         this.radius = false
 
-        this.circle1 = {radius: this.ball.r, x: window.innerWidth/2+this.ball.x, y: window.innerHeight/2+this.ball.y}
-        this.circle2 = {radius: this.ball2.r, x: window.innerWidth/2+this.ball2.x, y: window.innerHeight/2+this.ball2.y}
+        this.circle1 = {radius: this.ball.r, x: $canvas.width/2+this.ball.x, y: $canvas.height/2+this.ball.y}
+        this.circle2 = {radius: this.ball2.r, x: $canvas.width/2+this.ball2.x, y: $canvas.height/2+this.ball2.y}
         
         this.dx = this.circle1.x - this.circle2.x
         this.dy = this.circle1.y - this.circle2.y
@@ -146,25 +148,19 @@ $canvas.height = window.innerHeight
 
 let ball
 let ballsBot = []
+let botAnim = []
 let zoom =1
 let amount = 0.1
 let newzoom = 0
 let randomXYR = {x: 0, y:0, r:32}
-let botAnim = []
+let randomColor
 let mouseMap = {x: 0, y: 0}
 let counter = 1
-let nicknameDiv  = document.querySelector('.submit').innerHTML
 let oldPosition = {x: 0, y: 0}
+let nicknameDiv  = document.querySelector('.submit').innerHTML
+
 const playBtn = document.querySelector('.form__play')
 
-
-
-
-window.addEventListener('load', () => 
-{
-    mainContainer.classList.toggle('test2')
-    $canvas.classList.toggle('canvas__paused')
-})
 
 playBtn.addEventListener('click', () =>
 {
@@ -197,7 +193,7 @@ function setMapFinal()
 
 function setupGame()
 {
-    ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,48,'blue', true, nicknameDiv)
+    ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,32,'blue', true, nicknameDiv)
     oldPosition.x = ball.x
     oldPosition.y = ball.y
 
@@ -206,19 +202,21 @@ function setupGame()
         let x = Math.floor(Math.random() * Math.floor(5000))
         let y = Math.floor(Math.random() * Math.floor(5000))
 
-        ballsBot[i] = new Ball(x,y, 16, 'red', false)
+        ballsBot[i] = new Ball(x,y, 16, randomColor, false, undefined)
+    }
+
+    for(let i =0; i < 25; i++)
+    {
+        const botAnimElement = new Ball(Math.random() * $canvas.width, Math.random() * $canvas.height, Math.random() * 50,  randomColor, false, undefined)
+        botAnim.push(botAnimElement)
     }
 }
 
-for(let i =0; i < 5; i++)
-{
-    const botAnimElement = new Ball(Math.random() * window.innerWidth, Math.random() * window.innerHeight, Math.random() * 50,  'green', false)
-    botAnim.push(botAnimElement)
-}
+
 
 function setMap()
 {   
-    if(mouseMap.x + (window.innerWidth / 3) > window.innerWidth)
+    if(mouseMap.x + ($canvas.width / 3) > $canvas.width)
     {       
         
             for(let i = 0; i < ballsBot.length; i++)
@@ -260,10 +258,10 @@ function randomDirection()
         ballSelect.y += ballSelect.speedY
         ballSelect.x += ballSelect.speedX
 
-        if(ballSelect.y > window.innerHeight - ballSelect.r)
+        if(ballSelect.y > $canvas.height *2 - ballSelect.r)
         {
             ballSelect.speedY *= - (1 - friction)
-            ballSelect.y = window.innerHeight  - ballSelect.r
+            ballSelect.y = $canvas.height *2  - ballSelect.r
         }
 
         if(ballSelect.y < ballSelect.r)
@@ -272,10 +270,10 @@ function randomDirection()
             ballSelect.y = ballSelect.r
         }
 
-        if(ballSelect.x > window.innerWidth - ballSelect.r)
+        if(ballSelect.x > $canvas.width *2 - ballSelect.r)
         {
             ballSelect.speedX *= - (1 - friction)
-            ballSelect.x = window.innerWidth - ballSelect.r
+            ballSelect.x = $canvas.width *2 - ballSelect.r
         }
 
         if(ballSelect.x < ballSelect.r)
@@ -295,7 +293,7 @@ function resizeMap(w,h)
 }
 
 window.addEventListener("resize", ()=> {
-    resizeMap(window.innerWidth, window.innerHeight)
+    resizeMap($canvas.width, $canvas.height)
 })
 
 function setCanvasBg() 
@@ -311,7 +309,8 @@ function setCanvasBg()
     drawGrid()
     ball.ballUpdate()
 
-    function collisionBallBallBotAnim(botAnimColl, index){
+    function collisionBallBallBotAnim(botAnimColl, index)
+    {
 
         if(botAnimColl[index].collision(botAnimColl[index], ball))
         {
@@ -330,28 +329,61 @@ function setCanvasBg()
         ballsBot[i].drawBall()
         ballsBot[i].ballUpdate()
 
-    /* if(ball.collision(ball, ballsBot[i], true))
+    if(ball.collision(ball, ballsBot[i], true))
     {
         ballsBot.splice(i, 1)
-    } */
+    }
     }
 
-   /*  for(let i =  0; i <= botAnim.length - 1; i++)
+    for(let i =  0; i <= botAnim.length - 1; i++)
     {
         for(let j =  0; j <= ballsBot.length - 1; j++)
         {
 
             if(botAnim[i].collision(botAnim[i], ballsBot[j]))
             {
-                //ballsBot.splice(j, 1)
-
-                //console.log('botbotbo')
+                ballsBot.splice(j, 1)
             }
         }
         //collisionBallBallBotAnim(botAnim, i)
+    }
+
+/*     for(let i = 0; i < botAnim.length; i++)
+    {
+        for(let j = botAnim.length; j > botAnim.length; j--)
+        {
+            if(botAnim[i].collision(botAnim[i], botAnim[j]))
+            {
+                if(botAnim[i].r > botAnim[j].r)
+                {
+                    botAnim.splice(j, 1)
+                    console.log("ok")
+                }
+            }
+        }
+    }
+ */
+    /* for(const ball1 of botAnim)
+    {
+
+        for(const ball2 of botAnim)
+        {
+            if(ball1.collision(ball1, ball2))
+            {
+                if(ball1.r > ball2.r)
+                {
+                    botAnim.splice(ball2, 1)
+                    console.log(botAnim.splice(ball2, 1))
+                }
+                if(ball2.r < ball1.r)
+                {
+                    botAnim.splice(ball1, 1)
+                }
+            }
+        }
     } */
 
-/*     for(let i =  0; i <= botAnim.length - 1; i++)
+    for(let i =  0; i <= botAnim.length - 1; i++)
     {
         //botAnim[i].drawBall()
         //botAnim[i].ballUpdate()
@@ -372,16 +404,19 @@ function setCanvasBg()
 
             if(botAnim[i].r > ball.r)
             {
-                console.log('gameover')
-            }
-
-            if(botAnim[i].r < ball.r)
-            {
-                console.log('++')
+               context.beginPath()
+               context.fillStyle = 'orange'
+               context.fillRect($canvas.width / 2, $canvas.height / 2, 50, 50)
+               context.fill()
+               /* gameoverrr */
             }
         }
-        
-    }     */
+    }    
+
+    if(botAnim.length == 0)
+    {
+        //console.log('++')
+    }
     
 }
 
@@ -420,7 +455,7 @@ function drawGame()
     //btnPlayPause()
 }
 
-drawGame()
+//drawGame()
 
 /* function megamagaTest()
 {
@@ -431,7 +466,7 @@ drawGame()
     
 
 const btnSettings = document.querySelector('.settings__btn')
-
+const btnPlay = document.querySelector('.form__play')
 const menuSettings = document.querySelector('.menu__settings_main')
 
 const pauseBtn = document.querySelector('.test')
@@ -450,6 +485,7 @@ pauseBtn.addEventListener('click', () =>
     if(indexPause > 1)
     {
         indexPause = 0
+        drawGame()
     }
 
     pauseImg.src = tabPause[indexPause]
@@ -494,3 +530,78 @@ btnSettings.addEventListener('click', () =>
         }) 
     }
 })
+
+/* let windwoLoadCounter = 0
+let setupCounter
+
+window.addEventListener('load', () =>
+{
+    if(windwoLoadCounter == 0)
+    {
+        drawGame()
+        mainContainer.classList.toggle('test2')
+        $canvas.classList.toggle('canvas__paused')
+        windwoLoadCounter +=1
+    }
+})
+
+
+
+btnPlay.addEventListener('click', () =>
+{
+    drawGame()
+}) */
+
+const textWin = 'Vous avez éliminé tout les joueurs, YOU WIN'
+const textLose = 'Vous avez été éliminé, soyez plus fort !, YOU LOSE'
+const textReplay = 'REJOUER'
+
+context.beginPath()
+
+context.fillStyle = 'black'
+context.fillRect(($canvas.width / 2) - 202.5, ($canvas.height / 2 )- 77.5, 405, 155)
+
+context.fillStyle = '#fafafa'
+context.fillRect(($canvas.width / 2) - 200, ($canvas.height / 2 )- 75, 400, 150)
+
+
+context.font = '17px Helvetica'
+context.textAlign = 'center'
+context.textBaseline = 'middle'
+context.fillStyle = 'black'
+context.fillText(textWin,($canvas.width / 2) , ($canvas.height / 2)  )
+
+context.fillStyle = '#27ae60'
+//context.rotate(45 * Math.PI / 180)
+context.arc(($canvas.width / 2) -100, ($canvas.height / 2) + 75, 35, 0.5 * Math.PI, 1.5 *Math.PI, false)
+context.arc(($canvas.width / 2) + 100, ($canvas.height / 2) + 75, 35, 1.5 * Math.PI, 0.5 *Math.PI, false)
+context.fill()
+
+context.fillStyle = '#fafafa'
+context.font = 'bold 20px Helvetica'
+context.fillText(textReplay,($canvas.width / 2) , ($canvas.height / 2) + 75 )
+
+//let mouseMap = {x: 0, y:0}
+
+window.addEventListener('mousemove', (e) =>
+{
+    mouseMap.x += e.clientX 
+    mouseMap.y += e.clientY 
+    //console.log(mouseMap)
+
+    if(mouseMap.x > ($canvas.width / 2) - 100 && mouseMap.x < ($canvas.width / 2) + 100 && mouseMap.y < ($canvas.height / 2)  + 150 && mouseMap.y > ($canvas.height / 2)  + 75)
+    {
+        console.log('ok')
+    }
+})
+
+context.beginPath()
+context.fillStyle =  'cyan'
+context.fillRect(($canvas.width / 2) - 100, ($canvas.height / 2)  + 75,(($canvas.width / 2) + 100) - (($canvas.width / 2) - 100), (($canvas.height / 2)  + 150) - ($canvas.height / 2)  + 75)
+context.fill()
+
+
+
+
+
+console.log(context.measureText(textWin).width)
