@@ -33,6 +33,7 @@ input
     top: 10%;
     right: 5%;
     border: none;
+    cursor: pointer;
 }
 
 .test img
@@ -47,7 +48,6 @@ input
 
 .main__container
 {
-    display: none;
     position: absolute;
     width: 40%;
     padding: 50px;
@@ -58,6 +58,11 @@ input
     -webkit-box-shadow: 2px 4px 31px 12px rgba(0,0,0,0.43);
     -moz-box-shadow: 2px 4px 31px 12px rgba(0,0,0,0.43);
     box-shadow: 2px 4px 31px 12px rgba(0,0,0,0.43);
+}
+
+.not__active
+{
+    display: none;
 }
 
 .menu__settings
@@ -227,4 +232,88 @@ form
     text-align: center;
     margin: 0 auto;
     opacity: .8;
+}
+
+
+.menu__win
+{
+    display: none;
+    width: 20%;
+    padding: 50px;
+    background: #fafafa;
+    border: 1px solid #2e2e2e;
+    position: absolute;
+    top: 25%;
+    left: 36%;
+    text-align: center;
+}
+
+.win__main
+{
+    width: 100%;
+    position: relative;
+}
+
+.win__replay{
+    width: 50%;
+    position: absolute;
+    background: #27ae60;
+    top: 86%;
+    left: 20%;
+    padding: 5%;
+    border-radius: 25px;
+    color: #fafafa;
+    border: 1px solid #2e2e2e;
+    transition: .7s;
+    cursor:pointer;
+}
+
+.win__replay:hover
+{
+    transition: .7s;
+    transform: scale(1.2) ;   
+}
+
+.pause__title
+{
+    width: 100%;
+    text-align: center;
+    font-weight: normal;
+    color: #2e2e2e;
+}
+
+.pause__button
+{
+    width: 100%;
+    padding-top: 5%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pause__style-button
+{
+    width: 40%;
+    padding: 15px;
+    border-radius: 30px;
+    color: #fafafa;
+    text-align: center; 
+    transition: .7s;
+}
+
+.pause__style-button:hover
+{
+    transition: .7s;
+    transform: scale(1.2) ;   
+}
+
+
+.pause__restart
+{
+    background: #2e2e2e;
+}
+
+.pause__home
+{
+    background: #27ae60;
 }

@@ -12,7 +12,7 @@
         <canvas width="800" height="600" class="canvas js-canvas"></canvas>
 
     <main>
-        <div class="main__container">
+        <div class="main__container display__none">
             <div class="menu__settings">
                 <button class="settings__btn"><img src="img/gear.svg" alt="" class="img__settings"></button>
                 <div class="menu__settings_main">
@@ -41,7 +41,46 @@
             <!-- Choisir votre couleur avec bouton random puis save la couleur qui plait pour jouer -->
             <!-- 2eme div pour pause avec chnage color ball et resume et settings -->
         </div>
+
+        <div class="menu__win">
+            <div class="win__main">
+                <p>Vous avez éliminé tout les joueurs, YOU WIN ! </p>
+            </div>
+            <div class="win__replay">
+                Rejouer
+            </div>
+        </div>
+
+        <div class="menu__pause">
+            <div class="main__container">
+                    <div class="menu__settings">
+                        <button class="settings__btn"><img src="img/gear.svg" alt="" class="img__settings"></button>
+                        <div class="menu__settings_main">
+                            <button class="settings__closed">Mode jour</button>
+                            <button class="settings__closed">Mode sombre</button>
+                            <button class="settings__closed"><img src="img/github.svg" alt=""></button>
+                        </div>
+                    </div>
+                    <div class="menu__title">
+                        <h1>Hugo.io</h1>
+                    </div>
+                    <div class="pause__title">
+                        <h2>Pause</h2>
+                    </div>
+                    <div class="pause__button">
+                        <div class="pause__restart pause__style-button">
+                            Recommencer
+                        </div>
+                        <div class="pause__home pause__style-button">
+                            Retour à l'accueil
+                        </div>
+                    </div>
+                </div>
+        </div>
+
     </main>
+
+
 
     
     <button class="test">

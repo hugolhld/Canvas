@@ -551,7 +551,7 @@ btnPlay.addEventListener('click', () =>
 {
     drawGame()
 }) */
-
+/* 
 const textWin = 'Vous avez éliminé tout les joueurs, YOU WIN'
 const textLose = 'Vous avez été éliminé, soyez plus fort !, YOU LOSE'
 const textReplay = 'REJOUER'
@@ -604,4 +604,4 @@ context.fill()
 
 
 
-console.log(context.measureText(textWin).width)
+console.log(context.measureText(textWin).width) */
