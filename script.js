@@ -296,13 +296,75 @@ window.addEventListener("resize", ()=> {
     resizeMap($canvas.width, $canvas.height)
 })
 
+
+const settingsMenu = document.querySelectorAll('.settings__buttons ')
+const mainContainerMenu = document.querySelector('.main__container')
+let color = '#fafafa'
+let colorDark= '#2e2e2e'
+
+const test123 = document.querySelector('.bitch')
+console.log(test123)
+function darkMode()
+{
+         document.querySelector('.bitch').addEventListener('mouseover', () =>{
+            console.log('hello')
+          } )
+   
+    for(let i = 0; i < settingsMenu.length; i++)
+    {
+        //test123.push(settingsMenu[i])
+      //  console.log(test123)
+        test123.addEventListener('mouseover', () =>
+        {
+        console.log('hello')
+        if(i == 0)
+        {
+            color = '#fafafa'
+            colorDark = '#2e2e2e'
+            mainContainer.style.color = 'color'
+            mainContainer.style.background = 'color2'
+            mainContainer.container.border = '1px solid color'
+            console.log('0')
+        }
+        if(i == 1)
+        {
+            color = '#2E2E2E'
+            color2 = '#fafafa'
+            mainContainer.style.color = 'color'
+            mainContainer.style.background = 'color2'
+            mainContainer.container.border = '1px solid color'
+            console.log('1')
+        }
+    })
+    
+}
+    
+
+}
+
+
+
+/* function darkMode(button)
+{
+    context.fill = "#2e2e2e"
+} */
+
+/* for( const button of settingsButtons)
+{
+    console.log(button)
+    if(button == 'dark')
+    {
+        context.fillStyle = '2e2e2e'
+    } 
+} */
+
+window.requestAnimationFrame(randomDirection)
 function setCanvasBg() 
 {
+    window.requestAnimationFrame(darkMode)
     window.requestAnimationFrame(setCanvasBg)
-    window.requestAnimationFrame(randomDirection)
-    
     context.beginPath()
-    context.fillStyle = '#fff'
+    context.fillStyle = color
     context.fillRect(0, 0, $canvas.width, $canvas.height)
     context.fill()
 
@@ -408,6 +470,7 @@ function setCanvasBg()
                context.fillStyle = 'orange'
                context.fillRect($canvas.width / 2, $canvas.height / 2, 50, 50)
                context.fill()
+               win()
                /* gameoverrr */
             }
         }
@@ -416,17 +479,26 @@ function setCanvasBg()
     if(botAnim.length == 0)
     {
         //console.log('++')
+        //lose()
     }
     
 }
 
+
+function win()
+{
+    const  winDiv = document.querySelector('.menu__win')
+
+    console.log('you win')
+    winDiv.classList.add('test2')
+}
 
 function drawGrid()
 {
 
    const blockWidth = 50
    context.beginPath()
-   context.fillStyle = '#95a5a6'
+   context.fillStyle = colorDark
    context.lineWidth = .5
 
    for(let i = blockWidth; i < $canvas.height; i += blockWidth)
@@ -450,6 +522,7 @@ function drawGame()
     setupGame()
     //window.requestAnimationFrame(megamagaTest)
     //alert(megamagaTest())
+    
     setCanvasBg()
 
     //btnPlayPause()
@@ -472,12 +545,13 @@ const menuSettings = document.querySelector('.menu__settings_main')
 const pauseBtn = document.querySelector('.test')
 const pauseImg = document.querySelector('.test img')
 const mainContainer = document.querySelector('.main__container')
+const menuPause = document.querySelector('.menu__pause')
 const tabPause = ['img/pause.svg', 'img/close.svg']
 let indexPause = 0
 
 pauseBtn.addEventListener('click', () =>
 {
-    mainContainer.classList.toggle('test2')
+    menuPause.classList.toggle('test2')
     $canvas.classList.toggle('canvas__paused')
 
     indexPause += 1
@@ -531,7 +605,7 @@ btnSettings.addEventListener('click', () =>
     }
 })
 
-/* let windwoLoadCounter = 0
+ let windwoLoadCounter = 0
 let setupCounter
 
 window.addEventListener('load', () =>
@@ -545,12 +619,20 @@ window.addEventListener('load', () =>
     }
 })
 
-
-
-btnPlay.addEventListener('click', () =>
+if(mainContainer.classList.contains('main__container'))
 {
-    drawGame()
-}) */
+    btnPlay.addEventListener('click', () =>
+    {
+        drawGame()
+    })
+}else
+{
+
+}
+/*
+ */
+
+
 /* 
 const textWin = 'Vous avez éliminé tout les joueurs, YOU WIN'
 const textLose = 'Vous avez été éliminé, soyez plus fort !, YOU LOSE'
@@ -605,3 +687,26 @@ context.fill()
 
 
 console.log(context.measureText(textWin).width) */
+
+
+/* Reload !!!!!!!!!!!! function  */
+
+/* window.setTimeout(() => {
+    window.location.reload(true);
+}, 200); */
+
+
+/* function hello()
+{
+    console.log('hghghg')
+    requestAnimationFrame(hello)
+    setTimeout(hello, 3000)
+}
+
+requestAnimationFrame(hello) */
+
+/* si load ne peut afficher le bouton pause */
+document.querySelector('.bitch').addEventListener('mouseover', () =>
+{
+    console.log('bonj')
+})

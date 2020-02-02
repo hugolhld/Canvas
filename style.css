@@ -25,7 +25,8 @@ input
     opacity: .5;
 }
 
-.test{
+.test
+{
     position: absolute;
     width: 5%;
     background: none;
@@ -33,7 +34,14 @@ input
     top: 10%;
     right: 5%;
     border: none;
+    transition: .7s;
     cursor: pointer;
+}
+
+.test:hover
+{
+    transition: .7s;
+    transform: scale(.8);
 }
 
 .test img
@@ -70,17 +78,23 @@ input
     position: relative;
 }
 
+.menu__settings_main :nth-child(3)
+{
+    padding: 10px;
+}
+
 .settings__btn
 {
     background: none;
     border: none;
+    transition: .7S;
     cursor: pointer;
 }
 
 .settings__btn:hover
 {
     transition: .7s;
-    transform: scale(1.5) rotate(180deg) ;
+    transform: scale(.9) rotate(180deg) ;
 }
 
 .img__settings
@@ -219,11 +233,7 @@ form
 .form__play:hover
 {
     transition: .7s;
-    transform: scale(.8);
-}
-
-.form__play:active{
-    transform:  scale(.8);
+    transform: scale(.9);
 }
 
 .menu__tuto
@@ -271,7 +281,7 @@ form
 .win__replay:hover
 {
     transition: .7s;
-    transform: scale(1.2) ;   
+    transform: scale(.9) ;   
 }
 
 .pause__title
@@ -285,10 +295,17 @@ form
 .pause__button
 {
     width: 100%;
-    padding-top: 5%;
+    padding-top: 10%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    transition: .7s;
+}
+
+.pause__button:hover
+{
+    transition: .7s;
+    transform: scale(.8);
 }
 
 .pause__style-button
@@ -299,12 +316,13 @@ form
     color: #fafafa;
     text-align: center; 
     transition: .7s;
+    cursor: pointer;
 }
 
 .pause__style-button:hover
 {
     transition: .7s;
-    transform: scale(1.2) ;   
+    transform: scale(.9) ;   
 }
 
 
