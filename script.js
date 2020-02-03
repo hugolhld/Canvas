@@ -1,10 +1,82 @@
 const $canvas = document.querySelector('.js-canvas')
 const context = $canvas.getContext('2d')
 
+const btnPlay = document.querySelector('.form__play')
+const pauseBtn = document.querySelector('.pause__game')
+const pauseImg = document.querySelector('.pause__game img')
+const mainContainer = document.querySelector('.main__container')
+const menuPause = document.querySelector('.menu__pause')
+const tabPause = ['img/pause.svg', 'img/close.svg']
+const playBtn = document.querySelector('.form__play')
+
+
 $canvas.width = window.innerWidth
 $canvas.height = window.innerHeight
 
- function Ball(x,y,r,c,m, nickname, bot)
+
+let ball
+let ballsBot = []
+let botAnim = []
+let randomXYR = {x: 0, y:0, r:32}
+let randomColor
+let mouseMap = {x: 0, y: 0}
+let counter = 1
+let oldPosition = {x: 0, y: 0}
+let nicknameDiv  = document.querySelector('.submit').innerHTML
+let btnSettings = document.querySelectorAll('.settings__btn')
+let menuSettings = document.querySelectorAll('.menu__settings_main')
+let windwoLoadCounter = 0
+let indexPause = 0
+
+window.addEventListener('load', () =>
+{
+    if(windwoLoadCounter == 0)
+    {
+        drawGame()
+
+        mainContainer.classList.toggle('active__container')
+        $canvas.classList.toggle('canvas__paused')
+        windwoLoadCounter +=1
+    }
+})
+
+playBtn.addEventListener('click', () =>
+{
+    nicknameDiv  = document.querySelector('.submit').value
+    ball.nickname = nicknameDiv
+    
+    mainContainer.classList.toggle('active__container')
+    $canvas.classList.toggle('canvas__paused')
+})
+
+pauseBtn.addEventListener('click', () =>
+{
+    const container = menuPause.children[0]
+    menuPause.classList.toggle('active__container')
+    container.classList.toggle('active__container')
+
+    $canvas.classList.toggle('canvas__paused')
+
+    indexPause += 1
+    
+    if(indexPause > 1)
+    {
+        indexPause = 0
+    }
+    pauseImg.src = tabPause[indexPause]
+})
+
+for(let i = 0; i < btnSettings.length; i++)
+{
+    btnSettings[i].addEventListener('click', () =>
+    {
+        menuSettings[i].classList.toggle('settings__open')
+        menuSettings[i].classList.toggle('settings__closed')
+    })
+}
+
+
+ function Ball(x,y,r,c,m, nickname, borderBall)
  {
     this.x = x
     this.y = y
@@ -16,8 +88,11 @@ $canvas.height = window.innerHeight
     this.speedY = 5
     this.botXL = true
     this.nickname  = nickname
-    this.bot = bot
+    this.borderBall = borderBall
     this.oldPosition = {x: 0, y: 0}
+    this.center = 90
+    this.border = 50
+    this.colorValue = Math.random() * 360
 
     this.mouseEvent = function()
     {
@@ -30,7 +105,8 @@ $canvas.height = window.innerHeight
 
     if(this.c == randomColor)
     {
-        this.c = `hsl(${Math.random() * 360}deg, 100%, 90%)`
+        this.c = `hsl(${this.colorValue}deg, 100%, ${this.center}%)`
+        this.cBorder= `hsl(${this.colorValue}deg, 100%, ${this.border}%)`
     }
 
     this.mouseEvent()
@@ -51,8 +127,6 @@ $canvas.height = window.innerHeight
                         this.y += ((this.mouse.y - this.y) / 3) *0.1
                 }else
                 {
-                    /* this.mouse.y = this.mouse.y / 5
-                    this.mouse.x = this.mouse.x / 5 */
                     if(this.mouse.x + ($canvas.width / 3) > $canvas.width || this.mouse.x + ($canvas.width / 3) < $canvas.width )
                     {       
                         this.x -= (this.mouse.x - this.oldPosition.x)
@@ -69,44 +143,30 @@ $canvas.height = window.innerHeight
         drawCanvas()
     }
 
-    this.botAnimDirection = function(randomXX,randomYY,randomRR)
-    {
-        const direction = () =>
-        {
-            window.requestAnimationFrame(direction)
-
-            this.x += randomXX
-            this.y += randomYY
-            this.r = randomRR
-
-            if(this.x > $canvas.width + this.r){
-                this.x = 0
-            }
-
-            if(this.y > $canvas.height + this.r){
-                this.y = 0
-            }
-
-            this.drawBall()
-        }
-        direction()
-    }
-
     this.drawBall = function() 
     {
+        if(this.borderBall == true)
+        {
+            context.beginPath()
+            context.fillStyle =  this.cBorder
+            context.arc(this.x, this.y, this.r *1.1, 0, Math.PI *2)
+            context.fill()
+        }
         context.beginPath()
         context.fillStyle =this.c
         context.arc(this.x, this.y, this.r, 0, Math.PI *2)
+
+
         context.fill()
 
         if(this.nickname != undefined || this.m == true)
         {
-            context.font = '25px Hellvetica'
+            context.font = '25px Helvetica'
             context.textAlign = 'center'
             context.textBaseline = 'middle'
-            context.fillStyle = 'white'
+            context.fillStyle = '#2e2e2e'
             context.fillText(this.nickname, this.x, this.y)
-            context.fillText(Math.round(this.r), this.x, this.y * 1.1)
+            context.fillText(Math.round(this.r), this.x, this.y * 1.15)
         }
     }
 
@@ -141,35 +201,11 @@ $canvas.height = window.innerHeight
                 }
             } 
         }
-        
     }
  }
 
 
-let ball
-let ballsBot = []
-let botAnim = []
-let zoom =1
-let amount = 0.1
-let newzoom = 0
-let randomXYR = {x: 0, y:0, r:32}
-let randomColor
-let mouseMap = {x: 0, y: 0}
-let counter = 1
-let oldPosition = {x: 0, y: 0}
-let nicknameDiv  = document.querySelector('.submit').innerHTML
 
-const playBtn = document.querySelector('.form__play')
-
-
-playBtn.addEventListener('click', () =>
-{
-    nicknameDiv  = document.querySelector('.submit').value
-    ball.nickname = nicknameDiv
-    
-    mainContainer.classList.toggle('test2')
-    $canvas.classList.toggle('canvas__paused')
-})
 
 
 window.addEventListener('mousemove', (event) =>
@@ -185,76 +221,38 @@ function setMapFinal()
         for(const botBall of ballsBot)
         {
             botBall.x += -mouseMap.x + event.clientX
-            //console.log(botBall.x)
         }
     })
-    
 }
 
 function setupGame()
 {
-    ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,32,'blue', true, nicknameDiv)
+    ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,32,randomColor, true, nicknameDiv, true)
     oldPosition.x = ball.x
     oldPosition.y = ball.y
 
     for(let i = 0; i < 500; i++)
     {
-        let x = Math.floor(Math.random() * Math.floor(5000))
-        let y = Math.floor(Math.random() * Math.floor(5000))
+        let x = Math.random() * 5000
+        let y = Math.random() * 5000
 
         ballsBot[i] = new Ball(x,y, 16, randomColor, false, undefined)
     }
 
-    for(let i =0; i < 25; i++)
+    for(let i =0; i < 40; i++)
     {
-        const botAnimElement = new Ball(Math.random() * $canvas.width, Math.random() * $canvas.height, Math.random() * 50,  randomColor, false, undefined)
+        const botAnimElement = new Ball(Math.random() * 3000, Math.random() * 3000, Math.random() * 50,  randomColor, false, undefined, true)
         botAnim.push(botAnimElement)
     }
 }
 
-
-
-function setMap()
-{   
-    if(mouseMap.x + ($canvas.width / 3) > $canvas.width)
-    {       
-        
-            for(let i = 0; i < ballsBot.length; i++)
-            {
-                    ballsBot[i].x = ballsBot[i].x - (mouseMap.x - oldPosition)
-                    oldPosition = mouseMap.x
-            } 
-    }
-/*     for(const ballBotSelect of ballsBot)
-    {
-         if(ball.y > window.innerHeight  - ball.r)
-        {
-            ballBotSelect.y += (ballBotSelect.y - ball.y) / 2
-        }
-        if(ball.y < 0  + ball.r)
-        {
-            ballBotSelect.y += (ballBotSelect.y + ball.y) / 2
-        }
-        if(ball.x < 0 + ball.r)
-        {
-            ballBotSelect.x += (ballBotSelect.x + ball.x) / 2
-        }
-        if(ball.x > window.innerWidth  - ball.r)
-        {
-            ballBotSelect.x += (ballBotSelect.x - ball.x) / 2
-        } 
-       
-    } */
-}
-
 function randomDirection()
 {
-
+    window.requestAnimationFrame(randomDirection)
     const friction = 0.05
 
     for(const ballSelect of botAnim)
     {
-        
         ballSelect.y += ballSelect.speedY
         ballSelect.x += ballSelect.speedX
 
@@ -281,7 +279,6 @@ function randomDirection()
             ballSelect.speedX *= - (1 - friction)
             ballSelect.x = ballSelect.r
         }
-
         ballSelect.drawBall()
     }
 }
@@ -293,97 +290,70 @@ function resizeMap(w,h)
 }
 
 window.addEventListener("resize", ()=> {
-    resizeMap($canvas.width, $canvas.height)
+    resizeMap(window.innerWidth, window.innerHeight)
 })
 
 
-const settingsMenu = document.querySelectorAll('.settings__buttons ')
-const mainContainerMenu = document.querySelector('.main__container')
-let color = '#fafafa'
+const settingsMenu= document.querySelector('.menu__settings_main ')
+let mainContainerMenu = document.querySelectorAll('.main__container')
+const winMenu = document.querySelector('.menu__win')
+let color1 = '#fafafa'
 let colorDark= '#2e2e2e'
 
-const test123 = document.querySelector('.bitch')
-console.log(test123)
+const test123 = document.querySelector('.menu__settings_main').children
+
 function darkMode()
-{
-         document.querySelector('.bitch').addEventListener('mouseover', () =>{
-            console.log('hello')
-          } )
-   
-    for(let i = 0; i < settingsMenu.length; i++)
+{ 
+    function setColor(color, color2)
     {
-        //test123.push(settingsMenu[i])
-      //  console.log(test123)
-        test123.addEventListener('mouseover', () =>
+        for(let i = 0; i < mainContainerMenu.length; i++)
         {
-        console.log('hello')
-        if(i == 0)
-        {
-            color = '#fafafa'
-            colorDark = '#2e2e2e'
-            mainContainer.style.color = 'color'
-            mainContainer.style.background = 'color2'
-            mainContainer.container.border = '1px solid color'
-            console.log('0')
+        mainContainerMenu[i].style.color = color2
+        mainContainerMenu[i].style.background = color
+        mainContainerMenu[i].style.border = `1px solid ${color2}`
         }
-        if(i == 1)
+
+        for(const btn of test123)
         {
-            color = '#2E2E2E'
-            color2 = '#fafafa'
-            mainContainer.style.color = 'color'
-            mainContainer.style.background = 'color2'
-            mainContainer.container.border = '1px solid color'
-            console.log('1')
+            btn.style.border = `1px solid ${color2}`
         }
-    })
-    
-}
-    
 
-}
+        winMenu.style.color = color2
+        winMenu.style.background = color
+        winMenu.style.border = `1px solid ${color2}`
+    }
 
-
-
-/* function darkMode(button)
-{
-    context.fill = "#2e2e2e"
-} */
-
-/* for( const button of settingsButtons)
-{
-    console.log(button)
-    if(button == 'dark')
+    for(let i = 0; i < test123.length; i++)
     {
-        context.fillStyle = '2e2e2e'
-    } 
-} */
+            test123[i].addEventListener('click', () =>
+            {
+                console.log(test123[i])
+            if(i == 0)
+            {
+                color1= '#fafafa'
+                colorDark = '#2e2e2e'
+            }
+            if(i == 1)
+            {
+                color1= '#2E2E2E'
+                colorDark = '#fafafa'
+            }
+            setColor(color1, colorDark)
+        })
+    }
+}
 
-window.requestAnimationFrame(randomDirection)
+
 function setCanvasBg() 
 {
-    window.requestAnimationFrame(darkMode)
     window.requestAnimationFrame(setCanvasBg)
     context.beginPath()
-    context.fillStyle = color
+    context.fillStyle = color1
     context.fillRect(0, 0, $canvas.width, $canvas.height)
     context.fill()
 
     drawGrid()
     ball.ballUpdate()
-
-    function collisionBallBallBotAnim(botAnimColl, index)
-    {
-
-        if(botAnimColl[index].collision(botAnimColl[index], ball))
-        {
-            console.log('game over')
-        }
-
-        if(ball.collision(ball, botAnimColl[index]))
-        {
-            botAnimColl.splice(index, 1)
-        }
-    }
 
     for(let i = 0; i < ballsBot.length; i++)
     {
@@ -391,95 +361,44 @@ function setCanvasBg()
         ballsBot[i].drawBall()
         ballsBot[i].ballUpdate()
 
-    if(ball.collision(ball, ballsBot[i], true))
-    {
-        ballsBot.splice(i, 1)
-    }
+        if(ball.collision(ball, ballsBot[i], true))
+        {
+            ballsBot.splice(i, 1)
+        }
     }
 
     for(let i =  0; i <= botAnim.length - 1; i++)
     {
         for(let j =  0; j <= ballsBot.length - 1; j++)
         {
-
             if(botAnim[i].collision(botAnim[i], ballsBot[j]))
             {
                 ballsBot.splice(j, 1)
             }
         }
-        //collisionBallBallBotAnim(botAnim, i)
     }
-
-/*     for(let i = 0; i < botAnim.length; i++)
-    {
-        for(let j = botAnim.length; j > botAnim.length; j--)
-        {
-            if(botAnim[i].collision(botAnim[i], botAnim[j]))
-            {
-                if(botAnim[i].r > botAnim[j].r)
-                {
-                    botAnim.splice(j, 1)
-                    console.log("ok")
-                }
-            }
-        }
-    }
- */
-    /* for(const ball1 of botAnim)
-    {
-
-        for(const ball2 of botAnim)
-        {
-            if(ball1.collision(ball1, ball2))
-            {
-                if(ball1.r > ball2.r)
-                {
-                    botAnim.splice(ball2, 1)
-                    console.log(botAnim.splice(ball2, 1))
-                }
-                if(ball2.r < ball1.r)
-                {
-                    botAnim.splice(ball1, 1)
-                }
-            }
-        }
-    } */
 
     for(let i =  0; i <= botAnim.length - 1; i++)
     {
-        //botAnim[i].drawBall()
-        //botAnim[i].ballUpdate()
-
         if(ball.collision(ball, botAnim[i]))
         {
-
             botAnim.splice(i, 1)
         }
-        
     }    
     for(let i =  0; i <= botAnim.length - 1; i++)
     {
-        //ballsBot[i].ballUpdate()
-
         if(botAnim[i].collision(botAnim[i], ball))
         {
-
             if(botAnim[i].r > ball.r)
             {
-               context.beginPath()
-               context.fillStyle = 'orange'
-               context.fillRect($canvas.width / 2, $canvas.height / 2, 50, 50)
-               context.fill()
-               win()
-               /* gameoverrr */
+               lose()
             }
         }
     }    
 
     if(botAnim.length == 0)
     {
-        //console.log('++')
-        //lose()
+        win()
     }
     
 }
@@ -488,9 +407,16 @@ function setCanvasBg()
 function win()
 {
     const  winDiv = document.querySelector('.menu__win')
+    winDiv.classList.add('active__container')
+    $canvas.classList.toggle('canvas__paused')
+}
 
-    console.log('you win')
-    winDiv.classList.add('test2')
+function lose()
+{
+    const  winDiv = document.querySelector('.menu__win')
+    winDiv.children[0].innerText = 'Vous vous êtes fait manger par plus gros que vous, dommage ...'
+    winDiv.classList.add('active__container')
+    $canvas.classList.toggle('canvas__paused')
 }
 
 function drawGrid()
@@ -520,118 +446,15 @@ function drawGrid()
 function drawGame()
 {
     setupGame()
-    //window.requestAnimationFrame(megamagaTest)
-    //alert(megamagaTest())
-    
     setCanvasBg()
-
-    //btnPlayPause()
+    
+    randomDirection()
+    darkMode()
+    
+    pauseBtn.style.display = 'block'
 }
 
 //drawGame()
-
-/* function megamagaTest()
-{
-    requestAnimationFrame(setMapFinal)
-} */
-
-
-    
-
-const btnSettings = document.querySelector('.settings__btn')
-const btnPlay = document.querySelector('.form__play')
-const menuSettings = document.querySelector('.menu__settings_main')
-
-const pauseBtn = document.querySelector('.test')
-const pauseImg = document.querySelector('.test img')
-const mainContainer = document.querySelector('.main__container')
-const menuPause = document.querySelector('.menu__pause')
-const tabPause = ['img/pause.svg', 'img/close.svg']
-let indexPause = 0
-
-pauseBtn.addEventListener('click', () =>
-{
-    menuPause.classList.toggle('test2')
-    $canvas.classList.toggle('canvas__paused')
-
-    indexPause += 1
-    
-    if(indexPause > 1)
-    {
-        indexPause = 0
-        drawGame()
-    }
-
-    pauseImg.src = tabPause[indexPause]
-
-    /* if(pauseImg.src == 'img/close.svg')
-    {
-        pauseImg.src = 'img/pause.svg'
-    }
-    if(pauseImg.src == 'img/pause.svg')
-    {
-        pauseImg.src = 'img/close.svg'
-    } */
-})
-
-
-btnSettings.addEventListener('click', () =>
-{
-    //menuSettings.classList.toggle('active')
-
-    menuSettings.classList.toggle('active')
-    for(let i = 0; i < menuSettings.children.length ;i++  )
-    {
-        let selected = menuSettings.children[i]
-
-        if(selected.classList.contains('settings__open'))
-        {
-            selected.classList.toggle('settings__open')
-            selected.classList.toggle('settings__closed')
-        }
-        if(selected.classList.contains('settings__closed'))
-        {
-            selected.classList.toggle('settings__open')
-            selected.classList.toggle('settings__closed')
-        }
-
-        selected.classList.toggle ('animationSettings')
-       // console.log(selected.classList)
-        selected.addEventListener('animationend', () =>
-        {
-            //console.log(selected.classList + 'ok')
-            i++
-        }) 
-    }
-})
-
- let windwoLoadCounter = 0
-let setupCounter
-
-window.addEventListener('load', () =>
-{
-    if(windwoLoadCounter == 0)
-    {
-        drawGame()
-        mainContainer.classList.toggle('test2')
-        $canvas.classList.toggle('canvas__paused')
-        windwoLoadCounter +=1
-    }
-})
-
-if(mainContainer.classList.contains('main__container'))
-{
-    btnPlay.addEventListener('click', () =>
-    {
-        drawGame()
-    })
-}else
-{
-
-}
-/*
- */
-
 
 /* 
 const textWin = 'Vous avez éliminé tout les joueurs, YOU WIN'
@@ -687,26 +510,3 @@ context.fill()
 
 
 console.log(context.measureText(textWin).width) */
-
-
-/* Reload !!!!!!!!!!!! function  */
-
-/* window.setTimeout(() => {
-    window.location.reload(true);
-}, 200); */
-
-
-/* function hello()
-{
-    console.log('hghghg')
-    requestAnimationFrame(hello)
-    setTimeout(hello, 3000)
-}
-
-requestAnimationFrame(hello) */
-
-/* si load ne peut afficher le bouton pause */
-document.querySelector('.bitch').addEventListener('mouseover', () =>
-{
-    console.log('bonj')
-})

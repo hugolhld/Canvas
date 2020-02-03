@@ -11,6 +11,12 @@ input
     outline: none;
 }
 
+a
+{
+    text-decoration: none;
+    color: #fff;
+}
+
 .canvas{
     position: fixed;
     top: 0;
@@ -25,10 +31,11 @@ input
     opacity: .5;
 }
 
-.test
+.pause__game
 {
     position: absolute;
     width: 5%;
+    display: none;
     background: none;
     padding:0;
     top: 10%;
@@ -38,28 +45,30 @@ input
     cursor: pointer;
 }
 
-.test:hover
+.pause__game:hover
 {
     transition: .7s;
     transform: scale(.8);
 }
 
-.test img
+.pause__game img
 {
     width: 100%;
 }
 
-.test2{
-    transition: .5s;
-    display: block !important;
+.start
+{
+    z-index: 10;
 }
 
 .main__container
 {
+    display: none;
     position: absolute;
     width: 40%;
     padding: 50px;
     background: #fafafa;
+    color: #2e2e2e;
     top: 13%;
     left: 27%;
     border: 1px solid black;
@@ -68,9 +77,10 @@ input
     box-shadow: 2px 4px 31px 12px rgba(0,0,0,0.43);
 }
 
-.not__active
+.active__container
 {
-    display: none;
+    transition: .5s;
+    display: block !important;
 }
 
 .menu__settings
@@ -104,6 +114,7 @@ input
 
 .menu__settings_main
 {
+    width: 85%;
     height: 100%;
     display: none;
     position: absolute;
@@ -133,6 +144,11 @@ input
     background: #2e2e2e;
     color: #fafafa;
 }
+.menu__settings_main button:nth-child(3)
+{
+    background: #fafafa;
+    color: #2e2e2e;
+}
 
 .menu__settings_main button img
 {
@@ -148,8 +164,8 @@ input
 
 .settings__open
 {
-    display: block;
-    animation: animationSettings 5s ease-in-out ; 
+    display: flex !important;
+    animation: animationSettings 5s ease ; 
 }
 .settings__closed
 {
@@ -160,19 +176,18 @@ input
 @keyframes animationSettings
 {
     0%{width: 0%; }
-    100%{width: 100%;}
+    100%{width: 85%;}
 }
 @keyframes animationSettingsClosed
 {
-    0%{width: 100%; }
-    100%{width: 0;}
+    0%{width: 85%; }
+    100%{width: 0%;}
 }
 
 .menu__title
 {
     text-align: center;
     font-size: 2em;
-    color: #2e2e2e;
 }
 
 .menu__connection
@@ -214,16 +229,16 @@ form
 .form__play img
 {
     width: 35px;
-    left: 40%;
-    position: absolute;
+    margin-left: 10%;
 }
 
-.form__play :nth-child(1)
+.form__play div
 {
     width: 100px;
     height: 100px;
     margin: 15px;
-    padding: 20px;
+    display: flex;
+    justify-content: center;
     background: #27ae60;
     border-radius: 50%;
     cursor: pointer;
@@ -300,12 +315,6 @@ form
     display: flex;
     justify-content: space-between;
     transition: .7s;
-}
-
-.pause__button:hover
-{
-    transition: .7s;
-    transform: scale(.8);
 }
 
 .pause__style-button

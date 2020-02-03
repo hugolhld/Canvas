@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Hugo.io</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,13 +12,13 @@
         <canvas width="800" height="600" class="canvas js-canvas"></canvas>
 
     <main>
-        <div class="main__container not__active">
+        <div class="main__container start">
             <div class="menu__settings">
                 <button class="settings__btn"><img src="img/gear.svg" alt="" class="img__settings"></button>
-                <div class="menu__settings_main">
-                    <button class="settings__closed">Mode jour</button>
-                    <button class="settings__closed">Mode sombre</button>
-                    <button class="settings__closed"><img src="img/github.svg" alt=""></button>
+                <div class="menu__settings_main settings__closed">
+                    <button class="">Mode jour</button>
+                    <button class="">Mode sombre</button>
+                    <button class=""><a href="https://github.com/hugolhld/Canvas"><img src="img/github.svg"></a></button>
                 </div>
             </div>
             <div class="menu__title">
@@ -31,8 +31,9 @@
                 <input type="text" name="nickname" placeholder="PSEUDO" class="submit" contenteditable="true">
                 <div class="form__play">
 
-                    <input type="button" value=""  class="transition__play" href="#">
-                    <img src="img/play-button.svg" alt="">
+                    <div type="button" value=""  class="transition__play" href="#">
+                        <img src="img/play-button.svg" alt="">
+                    </div>
                 </div>
             </form>
             <div class="menu__tuto">
@@ -47,18 +48,18 @@
                 <p>Vous avez éliminé tout les joueurs, YOU WIN ! </p>
             </div>
             <div class="win__replay">
-                Rejouer
+                <a href="index.html">Rejouer</a>     
             </div>
         </div>
 
-        <div class="menu__pause not__active">
+        <div class="menu__pause">
             <div class="main__container">
                     <div class="menu__settings">
                         <button class="settings__btn"><img src="img/gear.svg" alt="" class="img__settings"></button>
-                        <div class="menu__settings_main">
-                            <button class="settings__closed settings__buttons bitch">Mode jour</button>
-                            <button class="settings__closed settings__buttons">Mode sombre</button>
-                            <button class="settings__closed settings__buttons"><img src="img/github.svg" alt=""></button>
+                        <div class="menu__settings_main settings__closed">
+                            <button>Mode jour</button>
+                            <button>Mode sombre</button>
+                            <button><a href="https://github.com/hugolhld/Canvas"><img src="img/github.svg"></a></button>
                         </div>
                     </div>
                     <div class="menu__title">
@@ -69,10 +70,10 @@
                     </div>
                     <div class="pause__button">
                         <div class="pause__restart pause__style-button">
-                            Recommencer
+                            <a href="index.html">Recommencer</a>     
                         </div>
                         <div class="pause__home pause__style-button">
-                                Retour à l'accueil
+                            <a href="index.html">Retour à l'accueil</a> 
                         </div>
                     </div>
                 </div>
@@ -83,7 +84,7 @@
 
 
     
-    <button class="test">
+    <button class="pause__game">
         <img src="img/pause.svg" alt="">
     </button>
 
