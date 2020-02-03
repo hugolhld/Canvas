@@ -4,7 +4,7 @@ Hugo Lhernould - H2G2 - P2023
 
 ## Présentation du jeu 💻
 
-Le jeu est tout simplemnt inspiré par celui mondialement connu, j'ai essayé de reproduire à la limite de mes capacitées.
+Le jeu est tout simplemnt inspiré par celui mondialement connu,Agario, j'ai essayé de reproduire à la limite de mes capacitées en ce laps de temps.
 Alors le but est de anger des petits bots afin de pouvoir être assez gros pour dévorer ces adversaires
 
 Je souhaite continuer à ajouter le maximums de features pour l'utiliser pour mon portfolio par exemple, comme rajouter avec les webpacks, node.js ... un serveur afin de pouvoir jouer à plusieurs.
