@@ -28,6 +28,8 @@ let menuSettings = document.querySelectorAll('.menu__settings_main')
 let windwoLoadCounter = 0
 let indexPause = 0
 
+// On load le jeu se lance et la page de "connection" aussi
+
 window.addEventListener('load', () =>
 {
     if(windwoLoadCounter == 0)
@@ -40,6 +42,7 @@ window.addEventListener('load', () =>
     }
 })
 
+
 playBtn.addEventListener('click', () =>
 {
     nicknameDiv  = document.querySelector('.submit').value
@@ -48,6 +51,8 @@ playBtn.addEventListener('click', () =>
     mainContainer.classList.toggle('active__container')
     $canvas.classList.toggle('canvas__paused')
 })
+
+//Boutton pour activer le menu pause
 
 pauseBtn.addEventListener('click', () =>
 {
@@ -75,6 +80,7 @@ for(let i = 0; i < btnSettings.length; i++)
     })
 }
 
+//Function pour crée autant de balles que souahitez ainsi que pas mal de mécanismes
 
  function Ball(x,y,r,c,m, nickname, borderBall)
  {
@@ -94,6 +100,8 @@ for(let i = 0; i < btnSettings.length; i++)
     this.border = 50
     this.colorValue = Math.random() * 360
 
+
+    //Coord de la souris
     this.mouseEvent = function()
     {
         window.addEventListener('mousemove', (event) => 
@@ -103,6 +111,7 @@ for(let i = 0; i < btnSettings.length; i++)
             })
     }
 
+    //Couleur aléatoire
     if(this.c == randomColor)
     {
         this.c = `hsl(${this.colorValue}deg, 100%, ${this.center}%)`
@@ -111,6 +120,8 @@ for(let i = 0; i < btnSettings.length; i++)
 
     this.mouseEvent()
    
+
+    //Les coord se mettent a jour que sa soit des bots ou non
     this.ballUpdate = function()
     {
         
@@ -143,6 +154,7 @@ for(let i = 0; i < btnSettings.length; i++)
         drawCanvas()
     }
 
+    //Dessin de la balle avec ses bordures
     this.drawBall = function() 
     {
         if(this.borderBall == true)
@@ -170,6 +182,7 @@ for(let i = 0; i < btnSettings.length; i++)
         }
     }
 
+    //Pour detecter que les balles sont proches
     this.collision = function(ball, ball2, radius)
     {
 
@@ -214,16 +227,7 @@ window.addEventListener('mousemove', (event) =>
     mouseMap.y = event.clientY
 })
 
-function setMapFinal()
-{
-    window.addEventListener('mousemove', (event) =>
-    {
-        for(const botBall of ballsBot)
-        {
-            botBall.x += -mouseMap.x + event.clientX
-        }
-    })
-}
+//Pour setup la partie, la ball, les bots ...
 
 function setupGame()
 {
@@ -245,6 +249,8 @@ function setupGame()
         botAnim.push(botAnimElement)
     }
 }
+
+//Pour que les bots animés puissent avoir une direction à prendre
 
 function randomDirection()
 {
@@ -293,7 +299,6 @@ window.addEventListener("resize", ()=> {
     resizeMap(window.innerWidth, window.innerHeight)
 })
 
-
 const settingsMenu= document.querySelector('.menu__settings_main ')
 let mainContainerMenu = document.querySelectorAll('.main__container')
 const winMenu = document.querySelector('.menu__win')
@@ -301,6 +306,8 @@ let color1 = '#fafafa'
 let colorDark= '#2e2e2e'
 
 const test123 = document.querySelector('.menu__settings_main').children
+
+//function pour le mode sombre / jour
 
 function darkMode()
 { 
@@ -343,6 +350,7 @@ function darkMode()
     }
 }
 
+//Tout ce qui est en rapport avec l'arrière plan ainsi que les fonctions pour que les balles se mangent 
 
 function setCanvasBg() 
 {
@@ -403,7 +411,7 @@ function setCanvasBg()
     
 }
 
-
+//Si on gagne
 function win()
 {
     const  winDiv = document.querySelector('.menu__win')
@@ -411,6 +419,7 @@ function win()
     $canvas.classList.toggle('canvas__paused')
 }
 
+//Si on perds
 function lose()
 {
     const  winDiv = document.querySelector('.menu__win')
@@ -419,6 +428,7 @@ function lose()
     $canvas.classList.toggle('canvas__paused')
 }
 
+//Tracer les grilles
 function drawGrid()
 {
 

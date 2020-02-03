@@ -18,6 +18,7 @@ Je souhaite continuer à ajouter le maximums de features pour l'utiliser pour mo
 - Fonction de Win and Lose
 - Réglages afin de pouvoir mettre un mode sombre ou jour, iansi qu'un lien vers le git du projet
 - Des couleurs aléatoires pour tout les bots et adversaires, mais possibilité de choisir ça couleur avec le constructor pour créer une balle, il suffit de remplacer " randomColor "
+
     - ```js
             ball = new Ball(window.innerWidth / 2,window.innerHeight  / 2,32,randomColor, true, nicknameDiv, true)
         ```
